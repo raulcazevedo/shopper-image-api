@@ -6,6 +6,7 @@ export class Measure {
     public readonly measure_type: 'WATER' | 'GAS',
     public readonly image_url: string,          
     public readonly measure_value: number,      
-    public has_confirmed: boolean = false       
+    public has_confirmed: boolean = false,
+    public confirmed_value?: number
   ) {}
 }

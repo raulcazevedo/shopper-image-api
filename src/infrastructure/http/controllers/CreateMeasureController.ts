@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import { UploadMeasureUseCase } from '../../../application/use-cases/UploadMeasureUseCase';
-import { MeasureType } from '../../../domain/enums/MeasureType';
+import { CreateMeasureUseCase } from '../../../application/use-cases/CreateMeasureUseCase';
+import { PrismaMeasureRepository } from '../../persistence/MeasureRepository';
+import { GeminiService } from '../../services/GeminiService';
 
-export class UploadMeasureController {
-  constructor(private readonly uploadMeasureUseCase: UploadMeasureUseCase) {}
-
+export class CreateMeasureController {
   async handle(req: Request, res: Response): Promise<void> {
     try {
       const { type, customerCode, datetime } = req.body;
@@ -14,13 +13,16 @@ export class UploadMeasureController {
         return;
       }
 
-      const imageBuffer = req.file.buffer;
+      const useCase = new CreateMeasureUseCase(
+        new PrismaMeasureRepository(),
+        new GeminiService()
+      );
 
-      const measure = await this.uploadMeasureUseCase.execute({
-        type: type as MeasureType,
+      const measure = await useCase.execute({
+        type,
+        image: req.file,
         customerCode,
         datetime: new Date(datetime),
-        imageBuffer,
       });
 
       res.status(201).json(measure);
