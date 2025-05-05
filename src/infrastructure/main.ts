@@ -7,7 +7,7 @@ import confirmRoutes from './http/routes/confirm.routes';
 import { connect } from './persistence/database';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
 // Middlewares
 app.use(cors());

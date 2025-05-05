@@ -10,6 +10,10 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   },
   "include": [
     "src/**/*.ts"

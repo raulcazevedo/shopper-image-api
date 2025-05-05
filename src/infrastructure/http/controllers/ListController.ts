@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaMeasureRepository } from '../../persistence/PrismaMeasureRepository';
+import { PrismaMeasureRepository } from '../../persistence/MeasureRepository';
 
 export class ListMeasuresController {
   static async handle(req: Request, res: Response): Promise<Response> {
