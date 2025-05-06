@@ -5,6 +5,8 @@ services:
       - "80:80"
     env_file:
       - .env
+    networks:
+      - shopper-image-api
     environment:
       - PORT=80
     depends_on:
@@ -18,7 +20,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - shopper-image-api_pgdata:/var/lib/postgresql/data
+    networks:
+      - shopper-image-api
+
+networks:
+  shopper-image-api:
+    driver: bridge
 
 volumes:
-  pgdata:
+  shopper-image-api_pgdata:
+    driver: local

@@ -3,9 +3,9 @@ import { CreateMeasureUseCase } from 'application/use-cases/CreateMeasureUseCase
 import { PrismaMeasureRepository } from 'infrastructure/persistence/MeasureRepository';
 import { GeminiService } from 'infrastructure/services/GeminiService';
 
-export class CreateMeasureController {
+export class MeasureController {
   static async create(req: Request, res: Response): Promise<void> {
-    const { type, datetime } = req.body;
+    const { type } = req.body;
     const image = req.file;
     const customerCode = req.params.customerCode;
 
@@ -15,19 +15,17 @@ export class CreateMeasureController {
     }
 
     try {
-      // Construir o caminho da imagem
-      const imageUrl = `uploads/${image.originalname}`;
-
+      const imageUrl = `uploads/${image.filename}`;
       const measureRepository = new PrismaMeasureRepository();
       const geminiService = new GeminiService();
       const useCase = new CreateMeasureUseCase(measureRepository, geminiService);
 
       const measure = await useCase.execute({
         type,
-        image: image, 
+        image,
         customerCode,
-        datetime: new Date(datetime),
-        imageUrl 
+        datetime: new Date(),
+        imageUrl
       });
 
       res.status(201).json(measure);

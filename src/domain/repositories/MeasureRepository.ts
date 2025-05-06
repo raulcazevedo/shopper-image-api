@@ -1,7 +1,7 @@
 import { Measure } from '../entities/Measure';
 
 export interface MeasureRepository {
-  findByUUID(uuid: string): Promise<Measure | null>;  // Adicionando o método findByUUID
+  findByUUID(uuid: string): Promise<Measure | null>;
   save(measure: Measure): Promise<void>;
   create(measure: Measure): Promise<void>;
   update(measure: Measure): Promise<void>;

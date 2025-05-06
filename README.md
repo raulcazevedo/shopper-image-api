@@ -22,7 +22,7 @@ src/
 ## ⚙️ Como rodar localmente
 
 1. **Clone o repositório:**
-git clone https://github.com/seu-usuario/shopper-image-api.git
+git clone https://github.com/raulcazevedo/shopper-image-api.git
 cd shopper-image-api
 
 2. **Crie o arquivo .env**

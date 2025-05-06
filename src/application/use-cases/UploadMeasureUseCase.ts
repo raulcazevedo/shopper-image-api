@@ -1,18 +1,18 @@
 import { MeasureRepository } from '../../domain/repositories/MeasureRepository';
 import { GeminiService } from '../../infrastructure/services/GeminiService';
 import { Measure } from '../../domain/entities/Measure';
-import { MeasureDTO } from '../dto/MeasureDTO';
 import { MeasureType } from '../../domain/enums/MeasureType';
 import { randomUUID } from 'crypto';
 
 interface UploadImageDTO {
   type: MeasureType;
   imageBuffer: Buffer;
+  imageName: String;
   customerCode: string;
   datetime: Date;
 }
 
-export class UploadMeasureUseCase { 
+export class UploadMeasureUseCase {
   constructor(
     private readonly measureRepository: MeasureRepository,
     private readonly geminiService: GeminiService
@@ -27,20 +27,21 @@ export class UploadMeasureUseCase {
       throw new Error('Measure already exists for this customer and datetime');
     }
 
-    // Convertendo o Buffer da imagem para uma string base64
-    const imageBase64 = dto.imageBuffer.toString('base64');
+    const imageUrl = `uploads/${dto.imageName}`;
 
-    // Passando a imagem em base64 para o serviço
+    const imageBase64 = dto.imageBuffer.toString('base64');
     const predictedValue = await this.geminiService.getMeasureFromImage(imageBase64);
-    const measure = new Measure(
-      randomUUID(),
-      dto.customerCode,
-      dto.datetime,
-      dto.type,
-      'image_saved_somewhere.jpg', // ou use um caminho real após salvar a imagem
-      predictedValue,
-      false
-    );
+    
+    const measure = new Measure({
+      measure_uuid: randomUUID(),
+      customer_code: dto.customerCode,
+      measure_datetime: dto.datetime,
+      measure_type: dto.type,
+      image_url: imageUrl,
+      measure_value: predictedValue,
+      has_confirmed: false,
+      confirmed_value: null,
+    });
 
     await this.measureRepository.save(measure);
     return measure;

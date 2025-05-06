@@ -10,6 +10,7 @@ export class PrismaMeasureMapper {
       image_url: raw.image_url,
       measure_value: raw.measure_value,
       has_confirmed: raw.has_confirmed,
+      confirmed_value: null,
     };
   }
 }

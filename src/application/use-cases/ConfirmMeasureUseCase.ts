@@ -1,4 +1,3 @@
-// No ConfirmMeasureUseCase.ts
 import { MeasureRepository } from '../../domain/repositories/MeasureRepository';
 import { Measure } from '../../domain/entities/Measure';
 
@@ -11,6 +10,7 @@ export class ConfirmMeasureUseCase {
   constructor(private readonly measureRepository: MeasureRepository) {}
 
   async execute({ measure_uuid, confirmed_value }: ConfirmMeasureDTO): Promise<void> {
+    
     // Verifica se a leitura existe
     const measure = await this.measureRepository.findByUUID(measure_uuid);
     if (!measure) {
