@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ConfirmController } from '../controllers/ConfirmController';
 import { ConfirmMeasureUseCase } from 'application/use-cases/ConfirmMeasureUseCase';
-import { PrismaMeasureRepository } from 'infrastructure/persistence/MeasureRepository'; // Caminho correto para PrismaMeasureRepository
+import { PrismaMeasureRepository } from 'infrastructure/persistence/MeasureRepository';
 
 const router = Router();
 

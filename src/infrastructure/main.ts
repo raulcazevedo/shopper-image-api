@@ -20,8 +20,8 @@ app.use('/confirm', confirmRoutes);
 
 // Inicia o servidor
 async function start() {
-  await connect(); // conecta ao banco de dados
-  app.listen(PORT, () => {
+  await connect();
+  app.listen(80, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
 }

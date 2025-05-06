@@ -46,7 +46,7 @@ export class PrismaMeasureRepository implements MeasureRepository {
   async findByUUID(uuid: string): Promise<Measure | null> {
     return prisma.measure.findUnique({
       where: {
-        measure_uuid: uuid, // Usando measure_uuid como chave para buscar a medida
+        measure_uuid: uuid,
       },
     });
   }
@@ -107,6 +107,9 @@ export class PrismaMeasureRepository implements MeasureRepository {
       throw new Error('MEASURES_NOT_FOUND');
     }
 
-    return result.map(PrismaMeasureMapper.toDomain);
+    return result.map((item: any) => ({
+      ...PrismaMeasureMapper.toDomain(item),
+      confirmed_value: item.confirmed_value ?? undefined,
+    }));
   }
 }

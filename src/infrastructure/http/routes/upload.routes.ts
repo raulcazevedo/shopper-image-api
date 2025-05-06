@@ -1,7 +1,8 @@
-// src/routes/upload.routes.ts
+
 import { Router } from 'express';
 import multer from 'multer';
-import { UploadMeasureController } from '../controllers/UploadController';
+import { MeasureController } from '../../../api/controllers/MeasureController';
+import { UploadController } from '../controllers/UploadController';
 import { UploadMeasureUseCase } from 'application/use-cases/UploadMeasureUseCase';
 import { PrismaMeasureRepository } from 'infrastructure/persistence/MeasureRepository';
 import { GeminiService } from 'infrastructure/services/GeminiService';
@@ -26,7 +27,7 @@ const geminiService = new GeminiService();
 const uploadMeasureUseCase = new UploadMeasureUseCase(measureRepository, geminiService);
 
 // Criação da instância do controller com o use case
-const uploadController = new UploadMeasureController(uploadMeasureUseCase);
+const uploadController = new UploadController(uploadMeasureUseCase);
 
 // Instanciando o ConfirmMeasureUseCase e o ConfirmMeasureController
 const confirmMeasureUseCase = new ConfirmMeasureUseCase(measureRepository);
@@ -36,12 +37,15 @@ const listMeasuresByCustomerUseCase = new ListMeasuresByCustomerUseCase(measureR
 const listMeasuresByCustomerController = new ListMeasuresByCustomerController(listMeasuresByCustomerUseCase);
 
 // Definindo as rotas
+
+router.post('/:customerCode/create', upload.single('image'), MeasureController.create);
+
 router.post('/measures', upload.single('image'), (req, res) => {
-  createMeasureController.handle(req, res);
+  CreateMeasureController.create(req, res);
 });
 
 router.post('/', upload.single('image'), (req, res) => {
-  uploadController.handle(req, res);
+  uploadController.upload(req, res);
 });
 
 // Nova rota PATCH /confirm
@@ -51,7 +55,7 @@ router.patch('/confirm', (req, res) => {
 
 // Rota para listar as medidas de um cliente específico
 router.get('/:customer_code/list', (req, res) => {
-  listMeasuresByCustomerController.handle(req, res);  // Chama o controlador para processar a requisição
+  listMeasuresByCustomerController.handle(req, res);
 });
 
 export default router;

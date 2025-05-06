@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 // Cria uma instância do Prisma Client
 const prisma = new PrismaClient();
 
-// Função para conectar ao banco (geralmente o Prisma já lida com isso automaticamente)
+// Função para conectar ao banco
 async function connect() {
   try {
     await prisma.$connect();

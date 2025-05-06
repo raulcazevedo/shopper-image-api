@@ -5,9 +5,10 @@ import { PrismaMeasureRepository } from '../../persistence/MeasureRepository';
 
 import { GeminiService } from '../../services/GeminiService';
 import { UploadMeasureUseCase } from '../../../application/use-cases/UploadMeasureUseCase';
-import { UploadMeasureController } from '../controllers/UploadController';
+import { UploadController } from '../controllers/UploadController';
 
 import { upload } from '../middlewares/upload';
+import uploadRoutes from './upload.routes';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const confirmController = new ConfirmController(confirmMeasureUseCase);
 // Upload de imagem
 const geminiService = new GeminiService();
 const uploadMeasureUseCase = new UploadMeasureUseCase(measureRepository, geminiService);
-const uploadImageController = new UploadMeasureController(uploadMeasureUseCase);
+const uploadImageController = new UploadController(uploadMeasureUseCase);
 
 // Rota PATCH para confirmar medida
 router.patch('/:uuid', async (req, res) => {
@@ -28,7 +29,9 @@ router.patch('/:uuid', async (req, res) => {
 
 // Rota POST para upload de imagem com middleware do multer
 router.post('/measure/image', upload.single('image'), async (req, res) => {
-  await uploadImageController.handle(req, res);
+  await uploadImageController.upload(req, res);
 });
+
+router.use('/measures', uploadRoutes);
 
 export default router;

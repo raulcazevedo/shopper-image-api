@@ -9,6 +9,7 @@ interface CreateMeasureDTO {
   image: Express.Multer.File;
   customerCode: string;
   datetime: Date;
+  imageUrl: string; //
 }
 
 export class CreateMeasureUseCase {
@@ -27,15 +28,16 @@ export class CreateMeasureUseCase {
     // Obter o valor da medida a partir da imagem
     const predictedValue = await this.geminiService.getMeasureFromImage(imageBase64);
 
-    const measure = new Measure(
-      randomUUID(),
-      customerCode,
-      datetime,
-      type,
-      'image_saved_somewhere.jpg', // substitua com caminho real
-      predictedValue,
-      false
-    );
+    const measure = new Measure({
+      measure_uuid: randomUUID(),
+      customer_code: customerCode,
+      measure_datetime: datetime,
+      measure_type: type,
+      image_url: `uploads/${image.originalname}`,
+      measure_value: predictedValue,
+      has_confirmed: false,
+      confirmed_value: null,
+    });
 
     await this.measureRepository.save(measure);
 
